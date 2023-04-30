@@ -16,18 +16,25 @@ namespace OnlinePasswordManager.Server.Controllers
             _userService = userService;
         }
 
-        [HttpPut("register")]
+        [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterUserDto dto)
         {
             await _userService.RegisterUser(dto);
 
             return Ok();
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginUserDto dto)
+        {
+            string token = await _userService.GenerateJWT(dto);
+
+            return Ok(token);
+        }
+
         // register
 
         // login
-
-        // logout
 
         // change password
 

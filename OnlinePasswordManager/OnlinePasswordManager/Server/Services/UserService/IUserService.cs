@@ -5,7 +5,7 @@ namespace OnlinePasswordManager.Server.Services.UserService
     public interface IUserService
     {
         Task ChangeUserPassword();
-        Task LoginUser();
+        Task<string> GenerateJWT(LoginUserDto dto);
         Task RegisterUser(RegisterUserDto dto);
     }
 }
