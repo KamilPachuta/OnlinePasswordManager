@@ -1,11 +1,13 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using OnlinePasswordManager.Server;
+using OnlinePasswordManager.Server.Authorization;
 using OnlinePasswordManager.Server.Data.Context;
 using OnlinePasswordManager.Server.Data.Entities;
 using OnlinePasswordManager.Server.Data.Validators;
@@ -41,6 +43,9 @@ builder.Services.AddAuthentication(option =>
     };
 });
 
+builder.Services.AddScoped<IAuthorizationHandler, ResourceCategoryRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, ResourceNoteRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, ResourcePasswordRequirementHandler>();
 builder.Services.AddControllersWithViews();//.AddFluentValidation()
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddRazorPages();

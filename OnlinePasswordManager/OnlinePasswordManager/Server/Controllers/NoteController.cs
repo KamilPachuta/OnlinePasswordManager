@@ -21,32 +21,39 @@ namespace OnlinePasswordManager.Server.Controllers
         public async Task<ActionResult<IEnumerable<NoteDTO>>> GetAll()
         {
             var notes = await _noteService.GetAll();
+
+            return Ok(notes);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Note>> Get([FromRoute]int id)
         {
-            throw new NotImplementedException();
+            var note = await _noteService.Get(id);
+
+            return Ok(note);
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> Create([FromBody]NoteCreateDTO dto)
         {
-            throw new NotImplementedException();
-            int id;
+            var id = await _noteService.Create(dto);
+
             return Created($"/api/note/{id}", null);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update([FromRoute]int id)
+        public async Task<ActionResult> Update([FromRoute]int id, [FromBody]NoteCreateDTO dto)
         {
-            throw new NotImplementedException();
+            await _noteService.Update(id, dto);
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute]int id)
         {
-            throw new NotImplementedException();
+            await _noteService.Delete(id);
+            return Ok();
         }
     }
 }

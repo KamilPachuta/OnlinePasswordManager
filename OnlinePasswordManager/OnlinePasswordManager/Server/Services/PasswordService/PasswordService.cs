@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using OnlinePasswordManager.Server.Authorization;
 using OnlinePasswordManager.Server.Data.Context;
 using OnlinePasswordManager.Server.Data.Entities;
 using OnlinePasswordManager.Server.Exceptions;
@@ -11,12 +12,15 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
 {
     public class PasswordService : IPasswordService
     {
+        private readonly IAuthorizationService _authorizationService;
         private readonly IMapper _mapper;
         private readonly OnlinePasswordManagerDbContext _dbContext;
         private readonly IUserContextService _userContextService;
 
-        public PasswordService(OnlinePasswordManagerDbContext dbContext, IUserContextService userContextService, IMapper mapper)
+        public PasswordService(OnlinePasswordManagerDbContext dbContext, IUserContextService userContextService, 
+            IMapper mapper, IAuthorizationService authorizationService)
         {
+            _authorizationService = authorizationService;
             _mapper = mapper;
             _dbContext = dbContext;
             _userContextService = userContextService;
@@ -59,6 +63,8 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
                 throw new NotFoundException("Password not found.");
             }
 
+            await Access(password);
+
             var passwordDetailsDTO = _mapper.Map<PasswordDetailsDTO>(password);
 
             return passwordDetailsDTO;
@@ -86,12 +92,7 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
             if (password is null)
                 throw new NotFoundException("Password not found.");
 
-            //var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, restaurant, new ResourceOperationRequirement(ResourceOperation.Update)).Result;
-
-            //if (!authorizationResult.Succeeded)
-            //{
-            //    throw new ForbidException();
-            //}
+            await Access(password);
 
             _dbContext.Passwords.Remove(password);
             await _dbContext.SaveChangesAsync();
@@ -107,12 +108,7 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
             if (password is null)
                 throw new NotFoundException("Password not found.");
 
-            //var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, restaurant, new ResourceOperationRequirement(ResourceOperation.Update)).Result;
-
-            //if (!authorizationResult.Succeeded)
-            //{
-            //    throw new ForbidException();
-            //}
+            await Access(password);
 
             password.QuickNote = text;
 
@@ -130,15 +126,7 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
             if (password is null)
                 throw new NotFoundException("Password not found.");
 
-            //var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, restaurant, new ResourceOperationRequirement(ResourceOperation.Update)).Result;
-
-            //if (!authorizationResult.Succeeded)
-            //{
-            //    throw new ForbidException();
-            //}
-
-
-
+            await Access(password);
 
             password.CategoryId = categoryId;
 
@@ -156,12 +144,8 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
             if (password is null)
                 throw new NotFoundException("Password not found.");
 
-            //var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, restaurant, new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+            await Access(password);
 
-            //if (!authorizationResult.Succeeded)
-            //{
-            //    throw new ForbidException();
-            //}
 
             password.ServiceName = dto.ServiceName;
             password.Login = dto.Login;
@@ -189,12 +173,7 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
             if (password is null)
                 throw new NotFoundException("Password not found.");
 
-            //var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, restaurant, new ResourceOperationRequirement(ResourceOperation.Update)).Result;
-
-            //if (!authorizationResult.Succeeded)
-            //{
-            //    throw new ForbidException();
-            //}
+            await Access(password);
 
             var passwordVersion = new PasswordVersion()
             {
@@ -211,6 +190,15 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
 
         }
 
+        private async Task Access(Password password)
+        {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(_userContextService.User, password, new ResourcePasswordRequirement());
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException("No access.");
+            }
+        }
 
     }
 }

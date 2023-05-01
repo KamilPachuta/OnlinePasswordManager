@@ -16,7 +16,15 @@ namespace OnlinePasswordManager.Server.Middleware
             {
                 await next.Invoke(context);
             }
-            catch(NotFoundException notFoundException)
+            catch(ForbidException forbidException)
+            {
+                _logger.LogWarning(forbidException, forbidException.Message);
+
+                context.Response.StatusCode = 403;
+
+                await context.Response.WriteAsync(forbidException.Message);
+            }
+            catch (NotFoundException notFoundException)
             {
                 _logger.LogWarning(notFoundException, notFoundException.Message);
 
