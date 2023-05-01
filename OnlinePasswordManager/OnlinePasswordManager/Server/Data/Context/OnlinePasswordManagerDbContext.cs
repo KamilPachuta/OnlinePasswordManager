@@ -6,12 +6,12 @@ namespace OnlinePasswordManager.Server.Data.Context
 {
     public class OnlinePasswordManagerDbContext : DbContext
     {
-        public DbSet<Category> categories { get; set; }
-        public DbSet<User> users { get; set; }
-        public DbSet<Password> password { get; set; }
-        public DbSet<Login> logins { get; set; }
-        public DbSet<Note> notes { get; set; }
-        public DbSet<PasswordVersion> passwordsVersions { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Password> Passwords { get; set; }
+        public DbSet<Login> Logins { get; set; }
+        public DbSet<Note> Notes { get; set; }
+        public DbSet<PasswordVersion> PasswordsVersions { get; set; }
 
         public OnlinePasswordManagerDbContext(DbContextOptions<OnlinePasswordManagerDbContext> options) : base(options)
         {

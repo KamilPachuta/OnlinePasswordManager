@@ -36,13 +36,13 @@ namespace OnlinePasswordManager.Server.Services.UserService
 
             newUser.PasswordHash = hashedPassword;
 
-            await _dbContext.users.AddAsync(newUser);
+            await _dbContext.Users.AddAsync(newUser);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<string> GenerateJWT(LoginUserDto dto)
         {
-            var user = await _dbContext.users.FirstOrDefaultAsync(u => u.Username == dto.Username);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
 
             if (user == null)
             {

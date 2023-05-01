@@ -10,6 +10,8 @@ using OnlinePasswordManager.Server.Data.Context;
 using OnlinePasswordManager.Server.Data.Entities;
 using OnlinePasswordManager.Server.Data.Validators;
 using OnlinePasswordManager.Server.Middleware;
+using OnlinePasswordManager.Server.Services.PasswordService;
+using OnlinePasswordManager.Server.Services.UserContextService;
 using OnlinePasswordManager.Server.Services.UserService;
 using OnlinePasswordManager.Shared.Models.DTO;
 using OnlinePasswordManager.Shared.Models.Validators;
@@ -45,9 +47,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<OnlinePasswordManagerDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OnlinePasswordManagerConnection")));
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IValidator<LoginUserDto>, LoginUserDtoValidator>();
+builder.Services.AddHttpContextAccessor();
 
 // NLog: Setup NLog for Dependency injection
 builder.Logging.ClearProviders();
@@ -74,7 +79,7 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

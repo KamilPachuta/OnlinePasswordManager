@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlinePasswordManager.Server.Services.UserService;
 using OnlinePasswordManager.Shared.Models.DTO;
@@ -7,6 +8,7 @@ namespace OnlinePasswordManager.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -16,6 +18,7 @@ namespace OnlinePasswordManager.Server.Controllers
             _userService = userService;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterUserDto dto)
         {
@@ -24,6 +27,7 @@ namespace OnlinePasswordManager.Server.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginUserDto dto)
         {
