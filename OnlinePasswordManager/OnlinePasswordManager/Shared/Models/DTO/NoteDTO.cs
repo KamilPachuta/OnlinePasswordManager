@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OnlinePasswordManager.Shared.Models.DTO
 {
-    public class LoginUserDto
+    public class NoteDTO
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
     }
 }

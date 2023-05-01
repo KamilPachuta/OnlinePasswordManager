@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OnlinePasswordManager.Shared.Models.DTO
 {
-    public class RegisterUserDto
+    public class UserRegisterDto
     {
         public string Username { get; set; }
         public string Email { get; set; }

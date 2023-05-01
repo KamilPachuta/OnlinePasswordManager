@@ -3,7 +3,7 @@ using OnlinePasswordManager.Shared.Models.DTO;
 
 namespace OnlinePasswordManager.Server.Data.Validators
 {
-    public class LoginUserDtoValidator : AbstractValidator<LoginUserDto>
+    public class LoginUserDtoValidator : AbstractValidator<UserLoginDto>
     {
         public LoginUserDtoValidator()
         {

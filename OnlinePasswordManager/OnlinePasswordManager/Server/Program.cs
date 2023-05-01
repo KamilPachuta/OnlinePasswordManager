@@ -50,8 +50,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
-builder.Services.AddScoped<IValidator<LoginUserDto>, LoginUserDtoValidator>();
+builder.Services.AddScoped<IValidator<UserRegisterDto>, RegisterUserDtoValidator>();
+builder.Services.AddScoped<IValidator<UserLoginDto>, LoginUserDtoValidator>();
 builder.Services.AddHttpContextAccessor();
 
 // NLog: Setup NLog for Dependency injection

@@ -20,7 +20,7 @@ namespace OnlinePasswordManager.Server.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] RegisterUserDto dto)
+        public async Task<ActionResult> Register([FromBody] UserRegisterDto dto)
         {
             await _userService.RegisterUser(dto);
 
@@ -29,7 +29,7 @@ namespace OnlinePasswordManager.Server.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginUserDto dto)
+        public async Task<ActionResult> Login([FromBody] UserLoginDto dto)
         {
             string token = await _userService.GenerateJWT(dto);
 

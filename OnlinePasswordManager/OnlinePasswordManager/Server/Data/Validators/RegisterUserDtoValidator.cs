@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnlinePasswordManager.Shared.Models.Validators
 {
-    public class RegisterUserDtoValidator : AbstractValidator<RegisterUserDto>
+    public class RegisterUserDtoValidator : AbstractValidator<UserRegisterDto>
     {
         public RegisterUserDtoValidator(OnlinePasswordManagerDbContext dbContext)
         {

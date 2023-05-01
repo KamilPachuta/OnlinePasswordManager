@@ -13,6 +13,11 @@ namespace OnlinePasswordManager.Server
             CreateMap<Password, PasswordDetailsDTO>();
 
             CreateMap<PasswordCreateDTO, Password>();
+
+            CreateMap<Note, NoteDTO>();
+
+            CreateMap<NoteCreateDTO, Note>();
+
         }
     }
 }

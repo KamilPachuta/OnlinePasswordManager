@@ -28,7 +28,7 @@ namespace OnlinePasswordManager.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PasswordDTO>>> GetAllFromCategory()
+        public async Task<ActionResult<IEnumerable<PasswordDTO>>> GetAllFromCategory([FromQuery]int id)
         {
             var passwords = await _passwordService.GetAll();
 
@@ -48,18 +48,27 @@ namespace OnlinePasswordManager.Server.Controllers
         {
             await _passwordService.CreatePassword(dto);
 
-            return Ok();
+             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update([FromRoute]int id, [FromBody]PasswordCreateDTO dto)
+        [HttpPut("/update/details/{id}")]
+        public async Task<ActionResult> UpdateDetails([FromRoute]int id, [FromBody]PasswordUpdateDetailsDTO dto)
         {
-            await _passwordService.UpdatePassword(id, dto);
+            await _passwordService.UpdateDetails(id, dto);
 
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/update/password/{id}")]
+        public async Task<ActionResult> UpdatePassword([FromRoute] int id, [FromBody]string encryptedPassword)
+        {
+            await _passwordService.UpdatePassword(id, encryptedPassword);
+
+            return Ok();
+        }
+
+
+        [HttpPut("/add/category/{id}")]
         public async Task<ActionResult> AddCategory([FromRoute] int id, [FromQuery]int categoryId )
         {
             await _passwordService.AddCategory(id, categoryId);
@@ -67,12 +76,12 @@ namespace OnlinePasswordManager.Server.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/add/note/{id}")]
         public async Task<ActionResult> AddNote([FromRoute] int id, [FromBody]string text)
         {
             await _passwordService.AddQuickNote(id, text);
 
-            return Ok()
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -82,9 +91,6 @@ namespace OnlinePasswordManager.Server.Controllers
 
             return Ok();
         }
-
-
-
 
     }
 }

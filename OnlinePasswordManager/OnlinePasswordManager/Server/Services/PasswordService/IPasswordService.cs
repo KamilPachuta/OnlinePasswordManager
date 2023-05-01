@@ -11,6 +11,8 @@ namespace OnlinePasswordManager.Server.Services.PasswordService
         Task<IEnumerable<PasswordDTO>> GetAll();
         Task<IEnumerable<PasswordDTO>> GetAllFromCategory(int categoryId);
         Task<PasswordDetailsDTO> GetDetails(int id);
-        Task UpdatePassword(int id, PasswordCreateDTO dto);
+        Task UpdatePassword(int id, string encryptedPassword);
+        Task UpdateDetails(int id, PasswordUpdateDetailsDTO dto);
+
     }
 }

@@ -24,7 +24,7 @@ namespace OnlinePasswordManager.Server.Services.UserService
             _authenticationSettings = authenticationSettings;
         }
 
-        public async Task RegisterUser(RegisterUserDto dto)
+        public async Task RegisterUser(UserRegisterDto dto)
         {
             var newUser = new User()
             {
@@ -40,7 +40,7 @@ namespace OnlinePasswordManager.Server.Services.UserService
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<string> GenerateJWT(LoginUserDto dto)
+        public async Task<string> GenerateJWT(UserLoginDto dto)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
 
